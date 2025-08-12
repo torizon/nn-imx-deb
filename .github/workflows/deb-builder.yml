@@ -1,77 +1,75 @@
+name: Build Debian Package
+
 on: push
 
 jobs:
-  build-debs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: leonheldattoradex/build-deb-action@v1.7.1
-        env:
-          DEB_BUILD_OPTIONS: noautodbgsym
-        with:
-          buildpackage-opts: --build=binary --no-sign
-          host-arch: arm64
-          apt-opts: --install-recommends
-          apt-sources: |
-            Types: deb
-            URIs: https://feeds.toradex.com/debian
-            Suites: testing
-            Components: main non-free
-            Signed-By: /usr/share/keyrings/build-deb-action.gpg
-          apt-key: |
-            -----BEGIN PGP PUBLIC KEY BLOCK-----
-            
-            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
-            CvvuQQ==
-            =VfKA
-            -----END PGP PUBLIC KEY BLOCK-----
-          apt-preferences: |
-            Package: *
-            Pin: origin feeds.toradex.com
-            Pin-Priority: 900
+  build:
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: ['arm64']
+    uses: torizon/torizon-deb-ci/.github/workflows/toradex-deb-ci.yml@main
+    with:
+      arch: ${{ matrix.arch }}
+      docker-image: debian:bookworm
+      package-name: nn-imx
+      run-attestation: true
+      run-piuparts: false
+      upload-artifacts: true
+      extra-packages: ca-certificates
+      extra-repos: |
+        Types: deb
+        URIs: https://feeds.toradex.com/stable/imx8
+        Suites: stable
+        Components: main non-free
+        Signed-By: /etc/apt/trusted.gpg.d/build-deb-action.asc
+      extra-apt-preferences: |
+        Package: *
+        Pin: origin feeds.toradex.com
+        Pin-Priority: 900
+      extra-repo-keys: |
+        -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+        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
+        oP0iOoF1sEhFmTjxf4KP
+        =FKdA
+        -----END PGP PUBLIC KEY BLOCK-----
